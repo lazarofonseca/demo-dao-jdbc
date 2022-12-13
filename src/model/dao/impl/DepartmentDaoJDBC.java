@@ -9,6 +9,7 @@ import java.util.List;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
 
@@ -34,7 +35,21 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		
+		try {
+			
+			st = conn.prepareStatement("DELETE FROM department WHERE Id = ?");
+			st.setInt(1, id);
+			st.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DbIntegrityException("Departamento não pode ser deletado, existe um ou mais vededores alocados!\nDelete o vendedor");
+		}
+		finally {
+			DB.closeStatement(st);
+		}
+		
 
 	}
 

@@ -27,10 +27,15 @@ public class Program2 {
 		
 		System.out.println("Teste 02 findById");
 		System.out.println("Digite o id do departamento: ");
-		int id = sc.nextInt();
+		Integer id = sc.nextInt();
 		System.out.println(dep.findByid(id));
 		
 		
+		System.out.println("Teste 03 delete");
+		System.out.println("Digite o id do departamento: ");
+		id = sc.nextInt();
+		dep.delete(id);
+		System.out.println("Department deletado com sucesso!");
 		
 		
 		
