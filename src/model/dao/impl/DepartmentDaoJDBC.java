@@ -15,7 +15,7 @@ import model.entities.Department;
 public class DepartmentDaoJDBC implements DepartmentDao {
 
 	private Connection conn;
-	
+
 	public DepartmentDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -39,10 +39,31 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	}
 
 	@Override
-	public Department findByid(Integer obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Department findByid(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement("SELECT * FROM department WHERE Id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+				Department dep = new Department();
+				dep.setId(rs.getInt("Id"));
+				dep.setName(rs.getString("Name"));
+				return dep;
+			} else {
+				return null;
+			}
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+}
 
 	@Override
 	public List<Department> findAll() {
